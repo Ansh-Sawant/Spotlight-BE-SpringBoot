@@ -1,16 +1,18 @@
 package com.example.spotlight_spring.controller;
 
 import com.example.spotlight_spring.dto.NewsDTO;
+import com.example.spotlight_spring.dto.LoginUserDTO;
+import com.example.spotlight_spring.dto.SignupDTO;
 import com.example.spotlight_spring.service.NewsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class NewsController {
 
-    private NewsService newsService;
+    private final NewsService newsService;
 
     public NewsController(NewsService newsService) {
         this.newsService = newsService;
@@ -19,5 +21,25 @@ public class NewsController {
     @GetMapping("/news")
     public NewsDTO[] getNews(){
         return newsService.getNews();
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> signupUser(@RequestBody SignupDTO signupDTO) {
+        String response = newsService.signupUser(signupDTO);
+        if(response.equals("Signup Successful")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginUser(@RequestBody LoginUserDTO loginUserDTO) {
+        String response = newsService.loginUser(loginUserDTO);
+        if(response.equals("Login Successful")) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
     }
 }

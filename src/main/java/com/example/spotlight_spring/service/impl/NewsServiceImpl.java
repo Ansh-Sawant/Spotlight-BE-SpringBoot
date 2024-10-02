@@ -2,8 +2,12 @@ package com.example.spotlight_spring.service.impl;
 
 import com.example.spotlight_spring.dto.NewsApiResponseDTO;
 import com.example.spotlight_spring.dto.NewsDTO;
+import com.example.spotlight_spring.dto.LoginUserDTO;
+import com.example.spotlight_spring.dto.SignupDTO;
 import com.example.spotlight_spring.entity.News;
+import com.example.spotlight_spring.entity.User;
 import com.example.spotlight_spring.repository.NewsRepository;
+import com.example.spotlight_spring.repository.UserRepository;
 import com.example.spotlight_spring.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +22,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private NewsRepository newsRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final String apiKey = "1e212ce6230442a4ac98f2bacbab76b2";
     private final String newsApiUrl = "https://newsapi.org/v2/everything";
@@ -55,5 +62,26 @@ public class NewsServiceImpl implements NewsService {
             );
             newsRepository.save(news);
         });
+    }
+
+    @Override
+    public String signupUser(SignupDTO signupDTO) {
+        System.out.println(signupDTO);
+        User user = new User(
+                null,
+                signupDTO.getName(),
+                signupDTO.getEmail(),
+                signupDTO.getPassword()
+        );
+
+        userRepository.save(user);
+
+        return "Signup Successful";
+    }
+
+    @Override
+    public String loginUser(LoginUserDTO loginUserDTO) {
+        System.out.println(loginUserDTO);
+        return "Sorry, Login Not Available!";
     }
 }
