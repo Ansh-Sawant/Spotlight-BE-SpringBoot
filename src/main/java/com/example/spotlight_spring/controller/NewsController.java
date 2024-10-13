@@ -1,5 +1,6 @@
 package com.example.spotlight_spring.controller;
 
+import com.example.spotlight_spring.dto.BookmarkDTO;
 import com.example.spotlight_spring.dto.NewsDTO;
 import com.example.spotlight_spring.dto.LoginUserDTO;
 import com.example.spotlight_spring.dto.SignupDTO;
@@ -34,12 +35,12 @@ public class NewsController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginUserDTO loginUserDTO) {
-        String response = newsService.loginUser(loginUserDTO);
-        if(response.equals("Login Successful")) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-        }
+    public ResponseEntity<?> loginUser(@RequestBody LoginUserDTO loginUserDTO) {
+        return newsService.loginUser(loginUserDTO);
+    }
+
+    @PostMapping("/bookmarks")
+    public String bookmarkNews(@RequestBody BookmarkDTO bookmarkDTO) {
+        return newsService.bookmarkNews(bookmarkDTO);
     }
 }
