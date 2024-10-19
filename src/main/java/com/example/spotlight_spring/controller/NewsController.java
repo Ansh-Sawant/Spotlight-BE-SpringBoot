@@ -1,9 +1,6 @@
 package com.example.spotlight_spring.controller;
 
-import com.example.spotlight_spring.dto.BookmarkDTO;
-import com.example.spotlight_spring.dto.NewsDTO;
-import com.example.spotlight_spring.dto.LoginUserDTO;
-import com.example.spotlight_spring.dto.SignupDTO;
+import com.example.spotlight_spring.dto.*;
 import com.example.spotlight_spring.service.NewsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +39,15 @@ public class NewsController {
     @PostMapping("/bookmarks")
     public String bookmarkNews(@RequestBody BookmarkDTO bookmarkDTO) {
         return newsService.bookmarkNews(bookmarkDTO);
+    }
+
+    @GetMapping("/bookmarkedNews")
+    public AllBookmarksDTO[] getAllBookmarkedNews() {
+        return newsService.getAllBookmarkedNews();
+    }
+
+    @PostMapping("/deleteBookmarks")
+    public String deleteBookmarks(@RequestBody DeleteBookmarkDTO deleteBookmarkDTO) {
+        return newsService.deleteBookmarkedNews(deleteBookmarkDTO);
     }
 }

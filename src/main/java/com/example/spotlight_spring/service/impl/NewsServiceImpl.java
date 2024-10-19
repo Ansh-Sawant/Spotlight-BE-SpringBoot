@@ -9,7 +9,6 @@ import com.example.spotlight_spring.repository.NewsRepository;
 import com.example.spotlight_spring.repository.UserRepository;
 import com.example.spotlight_spring.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NewsServiceImpl implements NewsService {
@@ -128,5 +126,42 @@ public class NewsServiceImpl implements NewsService {
         bookmarkRepository.save(bookmark);
 
         return "Bookmark Saved Successfully";
+    }
+
+    @Override
+    public AllBookmarksDTO[] getAllBookmarkedNews() {
+        List<Bookmark> allBookmarks = bookmarkRepository.findAll();
+
+        if (!allBookmarks.isEmpty()) {
+            return allBookmarks.stream()
+                .map(bookmark -> new AllBookmarksDTO(
+                        bookmark.getId(),
+                        bookmark.getName(),
+                        bookmark.getEmail(),
+                        bookmark.getAuthor(),
+                        bookmark.getTitle(),
+                        bookmark.getDescription(),
+                        bookmark.getUrl(),
+                        bookmark.getUrlToImage(),
+                        bookmark.getPublishedAt(),
+                        bookmark.getContent()
+                )).toArray(AllBookmarksDTO[]::new);
+        }
+
+        return new AllBookmarksDTO[0];
+    }
+
+    @Override
+    public String deleteBookmarkedNews(DeleteBookmarkDTO deleteBookmarkDTO) {
+        Long deleteId = deleteBookmarkDTO.getId();
+        if (deleteId == null) {
+            throw new IllegalArgumentException("Bookmark ID must not be null");
+        }
+        try {
+            bookmarkRepository.deleteById(deleteId);
+            return "Bookmark Deleted Successfully";
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting bookmark: " + e.getMessage(), e);
+        }
     }
 }
