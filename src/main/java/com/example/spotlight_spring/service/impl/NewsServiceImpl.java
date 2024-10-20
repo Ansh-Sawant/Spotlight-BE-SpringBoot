@@ -93,7 +93,7 @@ public class NewsServiceImpl implements NewsService {
             return ResponseEntity.ok("Invalid Email, User Not Found!");
         }
 
-        User user = users.getFirst();  // Use the first user found
+        User user = users.get(0);  // Use the first user found
 
         if (user.getPassword().equals(loginUserDTO.getPassword())) {
             UserResponseDTO userResponseDTO = new UserResponseDTO(
