@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookmarkDTO {
-    private String name;
-    private String email;
     private String author;
     private String title;
     private String description;
